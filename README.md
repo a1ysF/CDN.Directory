@@ -5,152 +5,192 @@ CDN.Directory is a .NET 8 Web Application that allows users to manage a director
 Each Member can be linked to multiple pre-registered Skillsets and Hobbies.
 The system provides a clean MVC-based UI for CRUD operations and a separate API with Swagger for RESTful interactions.
 
-📂 Solution Structure (Clean Architecture)
-CDN.Directory.Core
-├── Entities / DTOs
 
-CDN.Directory.Infrastructure
-├── EF Core / DbContext / Migrations
+🔧 Tech Stack
 
-CDN.Directory.API
-├── REST API (Swagger for testing)
-├── MemberController (CRUD, Archive, Search)
-
-CDN.Directory.UI
-├── Razor Views (CRUD UI for Members)
-├── MemberScaffoldController
-
-CDN.Directory.Tests
-├── xUnit Tests (Full CRUD, Archive, Search covered)
-
-CDN.Directory.Seeder
-├── Seeder for Skillsets & Hobbies Master Data
-
-
-🔧 Technologies Used
 .NET 8
 
-MySQL (cdn_directory_db)
+Razor Pages (CDN.Directory.UI)
 
-Entity Framework Core (Pomelo MySQL Provider)
+Web API (CDN.Directory.API)
+
+Entity Framework Core 8 + Pomelo (MySQL)
 
 AutoMapper
 
-xUnit (Unit Testing)
+FluentValidation
 
-Bootstrap 5 (UI Styling)
+xUnit for Unit Testing
 
-Select2 (Enhanced Dropdown UX)
-
-Swagger (API Documentation)
+MySQL Workbench (Local DB)
 
 
-⚙️ Setup Instructions
-1️⃣ Database Setup
-Create your MySQL database:
+🎯 Features
+
+Clean Architecture (API / Core / Infrastructure / UI / Tests / Seeder)
+
+Members CRUD (Create, Read, Update, Delete)
+
+Wildcard Search by Username or Email
+
+Pre-Registered Skillsets & Hobbies via Master Tables
+
+Dropdown Selection + Typeahead Filtering (UI)
+
+Data Integrity via FK Constraints
+
+Fully Unit Tested
+
+
+📂 Solution Structure
+
+├── CDN.Directory.Core
+│ ├── Entities (Member, SkillsetMaster, HobbyMaster, Link Tables)
+│ └── DTOs (Create, Update, Read)
+├── CDN.Directory.Infrastructure
+│ ├── DbContext / Migrations (EF Core, MySQL)
+│ └── AppDbContextFactory for CLI commands
+├── CDN.Directory.API
+│ ├── RESTful API
+│ └── Swagger for testing
+├── CDN.Directory.UI
+│ ├── Razor Pages for CRUD
+│ └── MemberScaffoldController
+├── CDN.Directory.Seeder
+│ ├── Seeds Skillsets / Hobbies CSV into DB
+├── CDN.Directory.Tests
+│ ├── xUnit for API Controllers
+│ └── InMemoryDbContext for tests
+└── CDN.Directory.sln
+
+
+🛠️ Setup & Running Locally
+
+Step 1 Prerequisites
+
+MySQL Installed & Running (Workbench / Server)
+
+.NET 8 SDK Installed
+
+Step 2 MySQL Setup
+Create a database:
 
 CREATE DATABASE cdn_directory_db;
 
-Connection String (appsettings.json):
-"DefaultConnection": "server=localhost;port=3306;database=cdn_directory_db;user=root;password=yourpassword;"
+Ensure collation: utf8_general_ci (case-insensitive)
 
-2️⃣ Run EF Core Migrations
-Navigate to Infrastructure project:
+Step 3 Update Connection Strings
+File: appsettings.json (CDN.Directory.API / CDN.Directory.Infrastructure / CDN.Directory.UI)
+
+"ConnectionStrings": {
+"DefaultConnection": "server=localhost;port=3306;database=cdn_directory_db;user=root;password=yourpassword;"
+}
+
+Step 4 Apply EF Core Migrations
+In Infrastructure Project Directory:
 
 dotnet ef database update
 
-3️⃣ Seed Master Data (Skillsets / Hobbies)
-Option A: Run CDN.Directory.Seeder project.
-Option B: Manually run provided SQL insert statements.
+(This will generate the full schema into your MySQL Workbench)
 
 
-🚀 Running the Application
-UI (CRUD Razor Pages)
-Run: CDN.Directory.UI
-Opens at: /MemberScaffold
-Features:
+📋 ERD Structure
 
-Create / Edit / Delete Members
+Members (PK)
 
-Search by Username / Email
+MemberSkillsets (FK to Members / SkillsetMaster)
 
-Select from pre-registered Skillsets / Hobbies
+MemberHobbies (FK to Members / HobbyMaster)
 
-API (Optional)
-Run: CDN.Directory.API
-Swagger available at: /swagger
+SkillsetMaster (PK, Unique Names)
 
-API Endpoints (Examples):
-GET /api/members
-POST /api/members
-PUT /api/members/{id}
-PATCH /api/members/{id}/archive
-PATCH /api/members/{id}/unarchive
-GET /api/members/search?keyword=
+HobbyMaster (PK, Unique Names)
 
+✅ Relations Enforced, Cascades on Member Delete.
 
-✅ Testing
+Step 5 Seeding Initial Data
+To pre-populate Skillsets & Hobbies with sample data:
+
+Navigate to CDN.Directory.Seeder:
+dotnet run
+
+This seeds CSV of Skillsets / Hobbies into Master Tables.
+
+Step 6 Running Locally (UI)
+Navigate to CDN.Directory.UI:
+
+dotnet run
+
+Access: https://localhost:<port>/MemberScaffold
+
+Step 7 Running Locally (API / Swagger)
+Navigate to CDN.Directory.API:
+dotnet run
+
+Access: https://localhost:<port>/swagger
+
+Step 8 Running Unit Tests
 Navigate to CDN.Directory.Tests:
+
 dotnet test
 
-Tests Cover:
+
+📝 Demonstration Flow for Presentation (Suggested Steps)
+
+Open MySQL Workbench (show schema cdn_directory_db)
+
+Run CDN.Directory.UI (CRUD)
 
 Create Member
 
-Read (List / Single)
+View Members
 
 Update Member
 
 Delete Member
 
-Archive / Unarchive
+Show dropdown search for Skills / Hobbies works
 
-Search by Username / Email
+Run API via Swagger (show endpoints)
 
-NotFound Scenarios
+Show Unit Tests: dotnet test => 3 passed
 
-
-📊 Database Structure (ERD)
-Members (Id, Username, Email, PhoneNumber, IsArchived)
-SkillsetMaster (Id, Name)
-HobbyMaster (Id, Name)
-MemberSkillsets (MemberId, SkillsetId)
-MemberHobbies (MemberId, HobbyId)
-
-Relationships:
-
-Members → Skillsets via MemberSkillsets
-
-Members → Hobbies via MemberHobbies
+Explain Clean Architecture flow (UI -> API -> Core -> Infrastructure)
 
 
-🔄 Flow Diagram
-UI (Razor Views)
-→ MemberScaffoldController (CDN.Directory.UI)
-→ EF Core (Infrastructure)
-→ MySQL (cdn_directory_db)
+📷 Optional for Presentation
 
-API Consumers (Optional)
-→ MemberController (CDN.Directory.API)
-→ EF Core (Infrastructure)
-→ MySQL (cdn_directory_db)
+Include screenshots of working UI
 
-📝 Notes for Assessment / Interview
-Follows Clean Architecture
+ERD.png in repo root for DB visualization
 
-Uses Dependency Injection & AutoMapper
 
-Tests validate API behavior thoroughly
+💡 Technologies Used & Why
 
-UI provides clean, user-friendly CRUD experience
+.NET 8: Modern, robust, future-proof
 
-Separate API layer via Swagger for flexibility
+Clean Architecture: Maintainability, scalability
 
-🔗 Optional: GitHub Actions (if implemented)
-dotnet restore
+EF Core + MySQL (Pomelo): Relational DB with .NET-first migrations
 
-dotnet build
+Razor Pages: Lightweight UI for CRUD
 
-dotnet test
+AutoMapper: Clean DTO / Entity separation
 
-Publish artifacts (if applicable)
+xUnit: Proven testing framework
+
+MySQL Workbench: Visualize schema & verify data
+
+
+🔍 How to Search / Query
+
+API endpoint GET /members?keyword=foo (Wildcard search on Username / Email)
+
+UI Search box performs LIKE %keyword%
+
+
+📄 Additional Notes
+
+Database is local. For cloud deployment (Render / Heroku), you would need a cloud DB.
+
+This README assumes running locally for demo purposes.
