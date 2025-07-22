@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CDN.Directory.API\CDN.Directory.API.csproj" />
+    <ProjectReference Include="..\CDN.Directory.Core\CDN.Directory.Core.csproj" />
+    <ProjectReference Include="..\CDN.Directory.Infrastructure\CDN.Directory.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

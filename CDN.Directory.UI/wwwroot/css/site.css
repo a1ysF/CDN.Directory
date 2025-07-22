@@ -1,0 +1,76 @@
+body {
+    background-color: #343a40;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.navbar-container {
+    background-color: #2b2f33;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+    .navbar-container a {
+        color: white !important;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+
+        .navbar-container a:hover {
+            background-color: #444;
+        }
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.form-control,
+.form-select {
+    margin-bottom: 1rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    margin-right: 10px;
+    margin-bottom: 8px;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+    .table td a {
+        display: inline-block;
+        padding: 5px 10px;
+    }
+
+/* Choices.js */
+.choices__list--dropdown {
+    background-color: #343a40 !important;
+    color: white !important;
+}
+
+    .choices__list--dropdown .choices__item {
+        background-color: #343a40 !important;
+        color: white !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+        background-color: #495057 !important;
+        color: white !important;
+    }
+
+.choices__inner {
+    background-color: #343a40 !important;
+    color: white !important;
+}
